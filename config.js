@@ -10,14 +10,13 @@
 // ============================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAnrXmovXmBIGocOsbJxSIQ_7dwlHpccdU",
-  authDomain: "edit-web.firebaseapp.com",
-  databaseURL: "https://edit-web-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "edit-web",
-  storageBucket: "edit-web.firebasestorage.app",
-  messagingSenderId: "235371037065",
-  appId: "1:235371037065:web:a44cc11617acb19276e158",
-  measurementId: "G-7VJJSECTXX"
+  apiKey: "AIzaSyAxo4VkVVd8PqGJdM5ncIC-W8mQvU0z9uI",
+  authDomain: "grt4r-7758d.firebaseapp.com",
+  projectId: "grt4r-7758d",
+  storageBucket: "grt4r-7758d.firebasestorage.app",
+  messagingSenderId: "1044260841178",
+  appId: "1:1044260841178:web:271150cdbb31a90794e7e3",
+  measurementId: "G-5GY6WG5PLT"
 };
 
 // Стартовый баланс новых игроков ($)
