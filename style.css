@@ -1,0 +1,186 @@
+:root{
+  --bg: #0a0c10;
+  --panel: #12151b;
+  --panel-2: #171b23;
+  --line: #232833;
+  --text: #e7e9ee;
+  --text-dim: #8891a3;
+  --green: #1fd97e;
+  --red: #ff4f5e;
+  --amber: #ffb020;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  min-height:100vh;
+}
+
+.hidden{display:none !important;}
+.screen{min-height:100vh;}
+
+/* ---------- LOGIN ---------- */
+#login-screen{
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(31,217,126,0.08), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,79,94,0.07), transparent 45%),
+    var(--bg);
+}
+.login-card{
+  width:min(420px, 90vw);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:40px 32px;
+  text-align:center;
+}
+.brand-mark{
+  font-family:var(--mono); font-weight:700; font-size:28px; letter-spacing:2px;
+  color:var(--text); display:block;
+}
+.brand-sub{
+  font-size:13px; color:var(--text-dim); display:block; margin-top:4px;
+}
+.login-copy{ color:var(--text-dim); font-size:14px; line-height:1.6; margin:24px 0 20px; }
+.login-copy strong{ color:var(--green); }
+.btn-google{
+  width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+  background:#fff; color:#1f1f1f; border:none; border-radius:10px;
+  padding:12px 16px; font-size:14px; font-weight:600; cursor:pointer;
+  font-family:var(--sans);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn-google:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,0.35); }
+.login-disclaimer{ font-size:11px; color:var(--text-dim); margin-top:18px; }
+
+/* ---------- TOPBAR & TICKER ---------- */
+.ticker-tape{
+  background:#000; border-bottom:1px solid var(--line);
+  overflow:hidden; white-space:nowrap; height:32px; display:flex; align-items:center;
+}
+.ticker-track{
+  display:inline-flex; gap:28px; padding-left:100%;
+  animation:ticker-scroll 30s linear infinite;
+  font-family:var(--mono); font-size:12px;
+}
+.ticker-track span{ color:var(--text-dim); }
+.ticker-track .tk-up{ color:var(--green); }
+.ticker-track .tk-down{ color:var(--red); }
+@keyframes ticker-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-100%); }
+}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px; border-bottom:1px solid var(--line); background:var(--panel);
+}
+.brand.small{ font-family:var(--mono); font-weight:700; letter-spacing:2px; font-size:18px; }
+.topbar-right{ display:flex; align-items:center; gap:14px; }
+.balance-pill{
+  background:var(--panel-2); border:1px solid var(--line); border-radius:999px;
+  padding:6px 14px; display:flex; flex-direction:column; align-items:flex-end; line-height:1.2;
+}
+.balance-label{ font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); }
+.balance-value{ font-family:var(--mono); font-weight:700; font-size:15px; color:var(--green); }
+.avatar{ width:32px; height:32px; border-radius:50%; border:1px solid var(--line); }
+.btn-ghost{
+  background:transparent; border:1px solid var(--line); color:var(--text-dim);
+  border-radius:8px; padding:7px 12px; cursor:pointer; font-size:13px; font-family:var(--sans);
+}
+.btn-ghost:hover{ color:var(--text); border-color:var(--text-dim); }
+
+/* ---------- TABS ---------- */
+.tabs{ display:flex; gap:4px; padding:12px 24px 0; border-bottom:1px solid var(--line); overflow-x:auto; }
+.tab-btn{
+  background:none; border:none; color:var(--text-dim); font-family:var(--sans);
+  font-size:13px; font-weight:600; padding:10px 16px; cursor:pointer;
+  border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab-btn.active{ color:var(--text); border-bottom-color:var(--amber); }
+
+.content{ padding:24px; max-width:920px; margin:0 auto; }
+.tab-panel{ display:none; }
+.tab-panel.active{ display:block; }
+
+.panel-head{ margin-bottom:16px; }
+.panel-head h2{ margin:0 0 4px; font-size:20px; }
+.panel-hint{ font-size:13px; color:var(--text-dim); }
+
+/* ---------- MARKET LIST ---------- */
+.market-list{ display:flex; flex-direction:column; gap:8px; }
+.market-row{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; cursor:pointer; transition:border-color .12s ease;
+}
+.market-row:hover{ border-color:var(--text-dim); }
+.market-row .m-left{ display:flex; flex-direction:column; }
+.market-row .m-ticker{ font-family:var(--mono); font-weight:700; font-size:15px; }
+.market-row .m-name{ font-size:12px; color:var(--text-dim); }
+.market-row .m-right{ text-align:right; font-family:var(--mono); }
+.market-row .m-price{ font-weight:700; font-size:15px; }
+.market-row .m-change.up{ color:var(--green); }
+.market-row .m-change.down{ color:var(--red); }
+.m-empty{ color:var(--text-dim); font-size:13px; padding:20px; text-align:center; }
+
+/* ---------- CHART ---------- */
+.chart-wrap{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  padding:16px; margin-bottom:16px;
+}
+#chart-price{ font-family:var(--mono); font-size:14px; }
+.trade-box{
+  display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px;
+}
+.trade-field{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--text-dim); }
+.trade-field input{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  border-radius:8px; padding:8px 10px; font-family:var(--mono); width:120px;
+}
+.trade-total{ font-size:13px; color:var(--text-dim); margin-bottom:4px; }
+.trade-total strong{ color:var(--text); font-family:var(--mono); }
+.trade-actions{ display:flex; gap:10px; margin-left:auto; }
+.btn-buy, .btn-sell, .btn-primary{
+  border:none; border-radius:8px; padding:10px 20px; font-weight:700; cursor:pointer;
+  font-family:var(--sans); font-size:13px;
+}
+.btn-buy{ background:var(--green); color:#04140b; }
+.btn-sell{ background:var(--red); color:#1a0507; }
+.btn-primary{ background:var(--amber); color:#231400; }
+.btn-buy:hover, .btn-sell:hover, .btn-primary:hover{ filter:brightness(1.08); }
+
+/* ---------- LISTING FORM ---------- */
+.listing-form{
+  display:flex; flex-direction:column; gap:14px; max-width:360px;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
+}
+.listing-form label{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--text-dim); }
+.listing-form input{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  border-radius:8px; padding:9px 10px; font-family:var(--mono); font-size:14px;
+}
+
+/* ---------- TOAST ---------- */
+.toast{
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  padding:12px 20px; border-radius:10px; font-size:13px; opacity:0; pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease; z-index:50;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (max-width:560px){
+  .topbar{ padding:12px 16px; }
+  .content{ padding:16px; }
+  .trade-actions{ margin-left:0; width:100%; }
+  .trade-actions button{ flex:1; }
+}
