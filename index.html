@@ -7,7 +7,195 @@
 <title>FAKEX — ненастоящая биржа</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --bg: #0a0c10;
+  --panel: #12151b;
+  --panel-2: #171b23;
+  --line: #232833;
+  --text: #e7e9ee;
+  --text-dim: #8891a3;
+  --green: #1fd97e;
+  --red: #ff4f5e;
+  --amber: #ffb020;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  min-height:100vh;
+}
+
+.hidden{display:none !important;}
+.screen{min-height:100vh;}
+
+/* ---------- LOGIN ---------- */
+#login-screen{
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(31,217,126,0.08), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,79,94,0.07), transparent 45%),
+    var(--bg);
+}
+.login-card{
+  width:min(420px, 90vw);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:40px 32px;
+  text-align:center;
+}
+.brand-mark{
+  font-family:var(--mono); font-weight:700; font-size:28px; letter-spacing:2px;
+  color:var(--text); display:block;
+}
+.brand-sub{
+  font-size:13px; color:var(--text-dim); display:block; margin-top:4px;
+}
+.login-copy{ color:var(--text-dim); font-size:14px; line-height:1.6; margin:24px 0 20px; }
+.login-copy strong{ color:var(--green); }
+.btn-google{
+  width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+  background:#fff; color:#1f1f1f; border:none; border-radius:10px;
+  padding:12px 16px; font-size:14px; font-weight:600; cursor:pointer;
+  font-family:var(--sans);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn-google:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,0.35); }
+.login-disclaimer{ font-size:11px; color:var(--text-dim); margin-top:18px; }
+
+/* ---------- TOPBAR & TICKER ---------- */
+.ticker-tape{
+  background:#000; border-bottom:1px solid var(--line);
+  overflow:hidden; white-space:nowrap; height:32px; display:flex; align-items:center;
+}
+.ticker-track{
+  display:inline-flex; gap:28px; padding-left:100%;
+  animation:ticker-scroll 30s linear infinite;
+  font-family:var(--mono); font-size:12px;
+}
+.ticker-track span{ color:var(--text-dim); }
+.ticker-track .tk-up{ color:var(--green); }
+.ticker-track .tk-down{ color:var(--red); }
+@keyframes ticker-scroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-100%); }
+}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px; border-bottom:1px solid var(--line); background:var(--panel);
+}
+.brand.small{ font-family:var(--mono); font-weight:700; letter-spacing:2px; font-size:18px; }
+.topbar-right{ display:flex; align-items:center; gap:14px; }
+.balance-pill{
+  background:var(--panel-2); border:1px solid var(--line); border-radius:999px;
+  padding:6px 14px; display:flex; flex-direction:column; align-items:flex-end; line-height:1.2;
+}
+.balance-label{ font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); }
+.balance-value{ font-family:var(--mono); font-weight:700; font-size:15px; color:var(--green); }
+.avatar{ width:32px; height:32px; border-radius:50%; border:1px solid var(--line); }
+.btn-ghost{
+  background:transparent; border:1px solid var(--line); color:var(--text-dim);
+  border-radius:8px; padding:7px 12px; cursor:pointer; font-size:13px; font-family:var(--sans);
+}
+.btn-ghost:hover{ color:var(--text); border-color:var(--text-dim); }
+
+/* ---------- TABS ---------- */
+.tabs{ display:flex; gap:4px; padding:12px 24px 0; border-bottom:1px solid var(--line); overflow-x:auto; }
+.tab-btn{
+  background:none; border:none; color:var(--text-dim); font-family:var(--sans);
+  font-size:13px; font-weight:600; padding:10px 16px; cursor:pointer;
+  border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab-btn.active{ color:var(--text); border-bottom-color:var(--amber); }
+
+.content{ padding:24px; max-width:920px; margin:0 auto; }
+.tab-panel{ display:none; }
+.tab-panel.active{ display:block; }
+
+.panel-head{ margin-bottom:16px; }
+.panel-head h2{ margin:0 0 4px; font-size:20px; }
+.panel-hint{ font-size:13px; color:var(--text-dim); }
+
+/* ---------- MARKET LIST ---------- */
+.market-list{ display:flex; flex-direction:column; gap:8px; }
+.market-row{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; cursor:pointer; transition:border-color .12s ease;
+}
+.market-row:hover{ border-color:var(--text-dim); }
+.market-row .m-left{ display:flex; flex-direction:column; }
+.market-row .m-ticker{ font-family:var(--mono); font-weight:700; font-size:15px; }
+.market-row .m-name{ font-size:12px; color:var(--text-dim); }
+.market-row .m-right{ text-align:right; font-family:var(--mono); }
+.market-row .m-price{ font-weight:700; font-size:15px; }
+.market-row .m-change.up{ color:var(--green); }
+.market-row .m-change.down{ color:var(--red); }
+.m-empty{ color:var(--text-dim); font-size:13px; padding:20px; text-align:center; }
+
+/* ---------- CHART ---------- */
+.chart-wrap{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  padding:16px; margin-bottom:16px;
+}
+#chart-price{ font-family:var(--mono); font-size:14px; }
+.trade-box{
+  display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px;
+}
+.trade-field{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--text-dim); }
+.trade-field input{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  border-radius:8px; padding:8px 10px; font-family:var(--mono); width:120px;
+}
+.trade-total{ font-size:13px; color:var(--text-dim); margin-bottom:4px; }
+.trade-total strong{ color:var(--text); font-family:var(--mono); }
+.trade-actions{ display:flex; gap:10px; margin-left:auto; }
+.btn-buy, .btn-sell, .btn-primary{
+  border:none; border-radius:8px; padding:10px 20px; font-weight:700; cursor:pointer;
+  font-family:var(--sans); font-size:13px;
+}
+.btn-buy{ background:var(--green); color:#04140b; }
+.btn-sell{ background:var(--red); color:#1a0507; }
+.btn-primary{ background:var(--amber); color:#231400; }
+.btn-buy:hover, .btn-sell:hover, .btn-primary:hover{ filter:brightness(1.08); }
+
+/* ---------- LISTING FORM ---------- */
+.listing-form{
+  display:flex; flex-direction:column; gap:14px; max-width:360px;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
+}
+.listing-form label{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--text-dim); }
+.listing-form input{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  border-radius:8px; padding:9px 10px; font-family:var(--mono); font-size:14px;
+}
+
+/* ---------- TOAST ---------- */
+.toast{
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  padding:12px 20px; border-radius:10px; font-size:13px; opacity:0; pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease; z-index:50;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (max-width:560px){
+  .topbar{ padding:12px 16px; }
+  .content{ padding:16px; }
+  .trade-actions{ margin-left:0; width:100%; }
+  .trade-actions button{ flex:1; }
+}
+
+</style>
 </head>
 <body>
 
@@ -128,7 +316,471 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="config.js"></script>
-<script src="market.js"></script>
-<script src="app.js"></script>
+<script>
+// ============================================================
+//  market.js — генератор "живого" рынка
+//  Цена — детерминированная функция времени и seed акции,
+//  поэтому у ВСЕХ игроков в один момент времени одинаковый график,
+//  без необходимости в сервере, который постоянно что-то считает.
+// ============================================================
+
+// маленький хэш числа -> число [-1, 1], стабильный и быстрый (без циклов)
+function fakexHash(seed, x) {
+  const s = Math.sin(seed * 12.9898 + x * 78.233) * 43758.5453;
+  return (s - Math.floor(s)) * 2 - 1; // [-1, 1]
+}
+
+// строит "личность" акции из seed: несколько волн разной частоты/фазы
+function buildWaveProfile(seed) {
+  const waves = [];
+  for (let i = 0; i < 4; i++) {
+    const freq = 0.02 + Math.abs(fakexHash(seed, i * 3 + 1)) * 0.15;   // разная скорость колебаний
+    const phase = fakexHash(seed, i * 3 + 2) * Math.PI * 2;
+    const amp = 0.03 + Math.abs(fakexHash(seed, i * 3 + 3)) * 0.09;    // разная амплитуда
+    waves.push({ freq, phase, amp });
+  }
+  // лёгкий долгосрочный тренд (вверх или вниз) — у каждой акции свой характер
+  const drift = fakexHash(seed, 99) * 0.15; // за "день" +-15%
+  return { waves, drift };
+}
+
+const profileCache = new Map();
+function getProfile(seed) {
+  if (!profileCache.has(seed)) profileCache.set(seed, buildWaveProfile(seed));
+  return profileCache.get(seed);
+}
+
+/**
+ * Текущая цена акции.
+ * @param {number} basePrice  цена на момент листинга
+ * @param {number} seed       уникальное число акции
+ * @param {number} createdAtMs время листинга (мс)
+ * @param {number} nowMs      момент, для которого считаем цену (мс)
+ */
+function priceAt(basePrice, seed, createdAtMs, nowMs) {
+  const t = Math.max(0, (nowMs - createdAtMs) / 1000); // секунды с листинга
+  const { waves, drift } = getProfile(seed);
+
+  let mult = 1;
+  for (const w of waves) mult += w.amp * Math.sin(w.freq * t + w.phase);
+  mult += drift * (t / 86400); // тренд за сутки
+
+  // мелкий "тик-шум", свой для каждой секунды — придаёт живости
+  const tickSecond = Math.floor(t);
+  mult += fakexHash(seed, tickSecond) * 0.006;
+
+  const price = basePrice * Math.max(0.02, mult); // цена не уходит в ноль/минус
+  return Math.round(price * 100) / 100;
+}
+
+/**
+ * Массив точек для графика за последние `seconds` секунд с шагом `stepSec`.
+ */
+function priceHistory(basePrice, seed, createdAtMs, nowMs, seconds = 120, stepSec = 2) {
+  const points = [];
+  const steps = Math.floor(seconds / stepSec);
+  for (let i = steps; i >= 0; i--) {
+    const at = nowMs - i * stepSec * 1000;
+    if (at < createdAtMs) continue;
+    points.push({ t: at, p: priceAt(basePrice, seed, createdAtMs, at) });
+  }
+  if (points.length === 0) points.push({ t: nowMs, p: priceAt(basePrice, seed, createdAtMs, nowMs) });
+  return points;
+}
+
+</script>
+<script>
+// ============================================================
+//  app.js — вся логика FAKEX
+// ============================================================
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser = null;
+let userData = null;           // { balance, portfolio: {ticker: qty} }
+let stocksCache = {};          // ticker -> stock doc data
+let selectedTicker = null;
+let priceChart = null;
+
+const DEFAULT_STOCKS = [
+  { ticker: "MEOW",  name: "Meow Corp",        basePrice: 12 },
+  { ticker: "VOID",  name: "Void Industries",  basePrice: 30 },
+  { ticker: "TOAST", name: "Toast Holdings",   basePrice: 5  },
+  { ticker: "GLUE",  name: "Glue Dynamics",    basePrice: 18 },
+  { ticker: "NOPE",  name: "Nope Airlines",    basePrice: 45 },
+];
+
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._h);
+  showToast._h = setTimeout(() => t.classList.remove("show"), 2400);
+}
+function fmt(n) { return "$" + Number(n).toFixed(2); }
+
+// ---------- auth ----------
+$("google-login-btn").addEventListener("click", () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch((err) => {
+    showToast("Ошибка входа: " + err.message);
+  });
+});
+$("logout-btn").addEventListener("click", () => auth.signOut());
+
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    currentUser = user;
+    $("login-screen").classList.add("hidden");
+    $("app-screen").classList.remove("hidden");
+    $("user-avatar").src = user.photoURL || "";
+
+    // слушатели включаем сразу, независимо друг от друга —
+    // если один из ensure-вызовов ниже упадёт (например, из-за прав Firestore),
+    // это больше не должно блокировать показ рынка и баланса
+    listenUserDoc();
+    listenStocks();
+
+    try {
+      await ensureUserDoc(user);
+    } catch (err) {
+      console.error("ensureUserDoc:", err);
+      showToast("Ошибка Firestore (users): " + err.message);
+    }
+    try {
+      await ensureDefaultStocks();
+    } catch (err) {
+      console.error("ensureDefaultStocks:", err);
+      showToast("Ошибка Firestore (stocks): " + err.message);
+    }
+  } else {
+    currentUser = null;
+    userData = null;
+    stocksCache = {};
+    $("login-screen").classList.remove("hidden");
+    $("app-screen").classList.add("hidden");
+  }
+}, (err) => {
+  showToast("Ошибка авторизации: " + err.message);
+});
+
+async function ensureUserDoc(user) {
+  const ref = db.collection("users").doc(user.uid);
+  const snap = await ref.get();
+  if (!snap.exists) {
+    await ref.set({
+      name: user.displayName || "Игрок",
+      balance: STARTING_BALANCE,
+      portfolio: {},
+      createdAt: Date.now(),
+    });
+  }
+}
+
+async function ensureDefaultStocks() {
+  const snap = await db.collection("stocks").limit(1).get();
+  if (!snap.empty) return; // рынок уже кто-то создал
+  const batch = db.batch();
+  const now = Date.now();
+  DEFAULT_STOCKS.forEach((s) => {
+    const ref = db.collection("stocks").doc(s.ticker);
+    batch.set(ref, {
+      ticker: s.ticker,
+      name: s.name,
+      basePrice: s.basePrice,
+      seed: Math.floor(Math.random() * 1000000),
+      createdAt: now,
+      createdBy: "system",
+    });
+  });
+  await batch.commit();
+}
+
+function listenUserDoc() {
+  db.collection("users").doc(currentUser.uid).onSnapshot(
+    (snap) => {
+      if (!snap.exists) return;
+      userData = snap.data();
+      $("balance-value").textContent = fmt(userData.balance);
+      renderPortfolio();
+      updateTradeTotal();
+    },
+    (err) => {
+      console.error("listenUserDoc:", err);
+      showToast("Ошибка чтения баланса: " + err.message);
+    }
+  );
+}
+
+function listenStocks() {
+  db.collection("stocks").onSnapshot(
+    (snap) => {
+      snap.forEach((doc) => { stocksCache[doc.id] = doc.data(); });
+      renderMarket();
+      renderTicker();
+      renderPortfolio();
+      if (selectedTicker) renderChartHeader();
+    },
+    (err) => {
+      console.error("listenStocks:", err);
+      $("market-list").innerHTML =
+        '<div class="m-empty">Не удалось загрузить рынок: ' + escapeHtml(err.message) + "</div>";
+      showToast("Ошибка чтения рынка: " + err.message);
+    }
+  );
+}
+
+// ---------- tabs ----------
+document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+    $("tab-" + btn.dataset.tab).classList.add("active");
+  });
+});
+$("listing-cost-label").textContent = LISTING_COST.toFixed(0);
+$("listing-cost-label-2").textContent = fmt(LISTING_COST);
+
+// ---------- market rendering ----------
+function renderMarket() {
+  const list = $("market-list");
+  const tickers = Object.keys(stocksCache).sort();
+  if (tickers.length === 0) {
+    list.innerHTML = '<div class="m-empty">Рынок пуст. Будь первым — выставь свою акцию.</div>';
+    return;
+  }
+  const now = Date.now();
+  list.innerHTML = "";
+  tickers.forEach((tk) => {
+    const s = stocksCache[tk];
+    const price = priceAt(s.basePrice, s.seed, s.createdAt, now);
+    const priceAgo = priceAt(s.basePrice, s.seed, s.createdAt, now - 30000);
+    const change = priceAgo > 0 ? ((price - priceAgo) / priceAgo) * 100 : 0;
+    const row = document.createElement("div");
+    row.className = "market-row";
+    row.innerHTML = `
+      <div class="m-left">
+        <span class="m-ticker">${s.ticker}</span>
+        <span class="m-name">${escapeHtml(s.name)}</span>
+      </div>
+      <div class="m-right">
+        <div class="m-price">${fmt(price)}</div>
+        <div class="m-change ${change >= 0 ? "up" : "down"}">${change >= 0 ? "▲" : "▼"} ${Math.abs(change).toFixed(2)}%</div>
+      </div>`;
+    row.addEventListener("click", () => openChart(tk));
+    list.appendChild(row);
+  });
+}
+
+function renderTicker() {
+  const track = $("ticker-track");
+  const now = Date.now();
+  const tickers = Object.keys(stocksCache).sort();
+  if (tickers.length === 0) { track.innerHTML = ""; return; }
+  track.innerHTML = tickers.map((tk) => {
+    const s = stocksCache[tk];
+    const price = priceAt(s.basePrice, s.seed, s.createdAt, now);
+    const priceAgo = priceAt(s.basePrice, s.seed, s.createdAt, now - 30000);
+    const change = priceAgo > 0 ? ((price - priceAgo) / priceAgo) * 100 : 0;
+    const cls = change >= 0 ? "tk-up" : "tk-down";
+    return `<span>${s.ticker} <span class="${cls}">${fmt(price)} ${change >= 0 ? "▲" : "▼"}${Math.abs(change).toFixed(1)}%</span></span>`;
+  }).join("");
+}
+
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ---------- chart / trading ----------
+function openChart(ticker) {
+  selectedTicker = ticker;
+  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+  document.querySelector('.tab-btn[data-tab="chart"]').classList.add("active");
+  $("tab-chart").classList.add("active");
+  renderChartHeader();
+  drawChart();
+  updateTradeTotal();
+}
+
+function renderChartHeader() {
+  const s = stocksCache[selectedTicker];
+  if (!s) return;
+  const now = Date.now();
+  const price = priceAt(s.basePrice, s.seed, s.createdAt, now);
+  $("chart-title").textContent = `${s.ticker} — ${s.name}`;
+  $("chart-price").textContent = `Текущая цена: ${fmt(price)}`;
+}
+
+function drawChart() {
+  const s = stocksCache[selectedTicker];
+  if (!s) return;
+  const now = Date.now();
+  const points = priceHistory(s.basePrice, s.seed, s.createdAt, now, 120, 2);
+  const labels = points.map((p) => new Date(p.t).toLocaleTimeString());
+  const data = points.map((p) => p.p);
+  const rising = data[data.length - 1] >= data[0];
+
+  if (priceChart) priceChart.destroy();
+  const ctx = $("price-chart").getContext("2d");
+  priceChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        data,
+        borderColor: rising ? "#1fd97e" : "#ff4f5e",
+        backgroundColor: rising ? "rgba(31,217,126,0.08)" : "rgba(255,79,94,0.08)",
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: true,
+        tension: 0.25,
+      }],
+    },
+    options: {
+      responsive: true,
+      animation: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { ticks: { color: "#8891a3" }, grid: { color: "#232833" } },
+      },
+    },
+  });
+}
+
+// перерисовываем всё живьём каждые 2 секунды
+setInterval(() => {
+  renderMarket();
+  renderTicker();
+  if (selectedTicker) { renderChartHeader(); drawChart(); }
+}, 2000);
+
+$("trade-qty").addEventListener("input", updateTradeTotal);
+function updateTradeTotal() {
+  if (!selectedTicker || !stocksCache[selectedTicker]) { $("trade-total").textContent = "$0.00"; return; }
+  const s = stocksCache[selectedTicker];
+  const price = priceAt(s.basePrice, s.seed, s.createdAt, Date.now());
+  const qty = parseFloat($("trade-qty").value) || 0;
+  $("trade-total").textContent = fmt(price * qty);
+}
+
+$("buy-btn").addEventListener("click", () => trade("buy"));
+$("sell-btn").addEventListener("click", () => trade("sell"));
+
+async function trade(side) {
+  if (!selectedTicker || !stocksCache[selectedTicker]) return;
+  const qty = parseFloat($("trade-qty").value);
+  if (!qty || qty <= 0) { showToast("Укажи количество"); return; }
+
+  const s = stocksCache[selectedTicker];
+  const price = priceAt(s.basePrice, s.seed, s.createdAt, Date.now());
+  const cost = price * qty;
+  const ref = db.collection("users").doc(currentUser.uid);
+
+  try {
+    await db.runTransaction(async (tx) => {
+      const snap = await tx.get(ref);
+      const data = snap.data();
+      const portfolio = data.portfolio || {};
+      const held = portfolio[selectedTicker] || 0;
+
+      if (side === "buy") {
+        if (data.balance < cost) throw new Error("Не хватает денег на балансе");
+        portfolio[selectedTicker] = Math.round((held + qty) * 10000) / 10000;
+        tx.update(ref, { balance: Math.round((data.balance - cost) * 100) / 100, portfolio });
+      } else {
+        if (held < qty) throw new Error("Столько акций у тебя нет");
+        portfolio[selectedTicker] = Math.round((held - qty) * 10000) / 10000;
+        if (portfolio[selectedTicker] <= 0) delete portfolio[selectedTicker];
+        tx.update(ref, { balance: Math.round((data.balance + cost) * 100) / 100, portfolio });
+      }
+    });
+    showToast(side === "buy" ? `Куплено ${qty} ${selectedTicker}` : `Продано ${qty} ${selectedTicker}`);
+  } catch (err) {
+    showToast(err.message);
+  }
+}
+
+// ---------- portfolio ----------
+function renderPortfolio() {
+  const list = $("portfolio-list");
+  if (!userData) { list.innerHTML = ""; return; }
+  const portfolio = userData.portfolio || {};
+  const tickers = Object.keys(portfolio).filter((tk) => portfolio[tk] > 0);
+  if (tickers.length === 0) {
+    list.innerHTML = '<div class="m-empty">Портфель пуст. Купи что-нибудь на вкладке «Рынок».</div>';
+    return;
+  }
+  const now = Date.now();
+  list.innerHTML = "";
+  tickers.forEach((tk) => {
+    const s = stocksCache[tk];
+    if (!s) return;
+    const qty = portfolio[tk];
+    const price = priceAt(s.basePrice, s.seed, s.createdAt, now);
+    const value = price * qty;
+    const row = document.createElement("div");
+    row.className = "market-row";
+    row.innerHTML = `
+      <div class="m-left">
+        <span class="m-ticker">${s.ticker}</span>
+        <span class="m-name">${qty} шт. по ${fmt(price)}</span>
+      </div>
+      <div class="m-right">
+        <div class="m-price">${fmt(value)}</div>
+      </div>`;
+    row.addEventListener("click", () => openChart(tk));
+    list.appendChild(row);
+  });
+}
+
+// ---------- listing new stock ----------
+$("listing-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const ticker = $("listing-ticker").value.trim().toUpperCase();
+  const name = $("listing-name").value.trim();
+  const basePrice = parseFloat($("listing-price").value);
+
+  if (!/^[A-Z0-9]{2,5}$/.test(ticker)) { showToast("Тикер: 2–5 латинских букв/цифр"); return; }
+  if (!name) { showToast("Укажи название"); return; }
+  if (!basePrice || basePrice <= 0) { showToast("Некорректная стартовая цена"); return; }
+
+  const stockRef = db.collection("stocks").doc(ticker);
+  const userRef = db.collection("users").doc(currentUser.uid);
+
+  try {
+    await db.runTransaction(async (tx) => {
+      const stockSnap = await tx.get(stockRef);
+      if (stockSnap.exists) throw new Error("Такой тикер уже занят");
+      const userSnap = await tx.get(userRef);
+      const data = userSnap.data();
+      if (data.balance < LISTING_COST) throw new Error(`Нужно минимум ${fmt(LISTING_COST)} на балансе`);
+
+      tx.update(userRef, { balance: Math.round((data.balance - LISTING_COST) * 100) / 100 });
+      tx.set(stockRef, {
+        ticker, name, basePrice,
+        seed: Math.floor(Math.random() * 1000000),
+        createdAt: Date.now(),
+        createdBy: currentUser.uid,
+      });
+    });
+    showToast(`${ticker} выставлен на биржу!`);
+    $("listing-form").reset();
+    $("listing-price").value = 10;
+    document.querySelector('.tab-btn[data-tab="market"]').click();
+  } catch (err) {
+    showToast(err.message);
+  }
+});
+
+</script>
 </body>
 </html>
